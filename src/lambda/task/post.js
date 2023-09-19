@@ -36,23 +36,16 @@ async function handler(inputObject, event) {
     const client = new AWS.Textract({ region: "ap-northeast-2" });
 
     try {
-        const imageDecoded = Base64.decode(image)
+
         const result = await client.analyzeID({
             DocumentPages: [{
                 Bytes: Buffer.from(image, 'base64')
             }]
         }).promise();
-
-
-        console.log(inputObject);
-        //do something with inputs
-
-
         return {
             status: 200,
             response: {
                 rep: JSON.stringify(result)
-
             }
         };
     }
