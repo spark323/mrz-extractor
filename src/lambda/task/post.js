@@ -34,34 +34,33 @@ exports.apiSpec = apiSpec;
 async function handler(inputObject, event) {
     const { image } = inputObject;
     const client = new AWS.Textract({ region: "ap-northeast-2" });
-  
-    try
-    {
-    const imageDecoded=Base64.decode(image)
-    const result=await client.analyzeID({
-    DocumentPages:[{
-    Bytes:Buffer.from(image, 'base64')}]
-   }).promise();
+
+    try {
+        const imageDecoded = Base64.decode(image)
+        const result = await client.analyzeID({
+            DocumentPages: [{
+                Bytes: Buffer.from(image, 'base64')
+            }]
+        }).promise();
 
 
-    console.log(inputObject);
-    //do something with inputs
+        console.log(inputObject);
+        //do something with inputs
 
 
-    return {
-        status: 200,
-        response: {
-           rep:JSON.stringify(result)
+        return {
+            status: 200,
+            response: {
+                rep: JSON.stringify(result)
 
-        }
-    };
+            }
+        };
     }
-    catch(e)
-    {
+    catch (e) {
         console.log(e);
         return { predefinedError: apiSpec.errors.unexpected_error };
     }
-   
+
 }
 exports.handler = async (event, context) => {
     return await handleHttpRequest(event, context, apiSpec, handler);
